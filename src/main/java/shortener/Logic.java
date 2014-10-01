@@ -1,10 +1,6 @@
 package shortener;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import redis.clients.jedis.Jedis;
 
@@ -42,10 +38,6 @@ public class Logic {
 
 	public String getShort(String serverName, int port, String contextPath, String longUrl) throws Exception {
 		getConnection();
-
-		Connection conn = null;
-
-		Statement st = null;
 		String id = getId(longUrl);// check if URL has been shorten already
 		if (id != null) {
 			// if id is not null, this link has been shorten already.
@@ -67,7 +59,6 @@ public class Logic {
 		if (urlId.startsWith("/")) {
 			urlId = urlId.replace("/", "");
 		}
-		String query = "SELECT long_url FROM url_data where id=" + urlId;
 		System.out.println(urlId + "로 쇼튼된 URL을 받았으니 긴 URL을 찾으러간다");
 
 		String tempLong = jedis.get(urlId);
